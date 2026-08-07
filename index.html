@@ -27,14 +27,19 @@
         <h1>Build the best lineup.<br><em>Don’t go broke.</em></h1>
         <p class="subhead">Create a room, invite friends on their own devices, and secretly bid from a shared budget.</p>
       </div>
-      <div class="entry-grid">
+      <div class="entry-grid three">
+        <article class="panel entry-card pass-card">
+          <div class="panel-title"><span>01</span><h2>Pass & Play</h2></div>
+          <p class="entry-copy">Everyone uses one phone or computer. Add players, then pass the device for each secret bid.</p>
+          <button class="start-btn compact-btn pass-start" id="passPlayBtn"><span>PLAY ON ONE DEVICE</span><b>→</b></button>
+        </article>
         <article class="panel entry-card">
-          <div class="panel-title"><span>01</span><h2>Host a game</h2></div>
+          <div class="panel-title"><span>02</span><h2>Host online</h2></div>
           <label>Your name<input id="hostName" value="Host" maxlength="18"></label>
           <button class="start-btn compact-btn" id="createRoomBtn"><span>CREATE ROOM</span><b>→</b></button>
         </article>
         <article class="panel entry-card">
-          <div class="panel-title"><span>02</span><h2>Join a game</h2></div>
+          <div class="panel-title"><span>03</span><h2>Join online</h2></div>
           <label>Your name<input id="joinName" placeholder="Your name" maxlength="18"></label>
           <label>Room code<input id="joinCode" placeholder="ABC123" maxlength="6" autocapitalize="characters"></label>
           <button class="start-btn compact-btn secondary-start" id="joinRoomBtn"><span>JOIN ROOM</span><b>→</b></button>
@@ -53,7 +58,13 @@
         <article class="panel setup-panel">
           <div class="panel-title"><span>01</span><h2>Players <small id="playerCount">1/8</small></h2></div>
           <div id="lobbyPlayers" class="lobby-players"></div>
-          <p class="hint">Players can join from phones, tablets, or computers. The host must keep this tab open.</p>
+          <p class="hint" id="lobbyHint">Players can join from phones, tablets, or computers. The host must keep this tab open.</p>
+          <div class="local-only add-player-box">
+            <label>Add player
+              <div class="input-action"><input id="localPlayerName" placeholder="Player name" maxlength="18"><button id="addLocalPlayerBtn">Add</button></div>
+            </label>
+            <p class="hint">Add 2–8 players. Everyone will bid privately one at a time on this device.</p>
+          </div>
         </article>
 
         <article class="panel setup-panel host-only" id="gameSettingsPanel">
@@ -109,7 +120,7 @@
     <section id="gameView" class="view">
       <div class="game-header">
         <div><p class="eyebrow" id="categoryLabel">DRAFT</p><h2>Round <span id="roundNumber">1</span> of <span id="roundTotal">5</span></h2></div>
-        <div class="room-mini">Room <strong id="gameRoomCode">------</strong></div>
+        <div class="room-mini" id="gameRoomBadge">Room <strong id="gameRoomCode">------</strong></div>
       </div>
       <div class="scoreboard multiplayer" id="scoreboard"></div>
 
@@ -140,7 +151,13 @@
     </section>
   </main>
 
-  <dialog id="howDialog"><button class="close" id="closeHow">×</button><h2>How Draft Duel works</h2><ol><li>The host creates a room and shares the code.</li><li>Up to eight players join on separate devices.</li><li>Every player secretly bids from the same starting budget.</li><li>The highest valid bid wins the item and pays that amount.</li><li>Tied bids are settled randomly between the tied players.</li></ol></dialog>
+  <dialog id="passDialog" class="pass-dialog">
+    <h2 id="passDialogTitle">Pass the device</h2>
+    <p id="passDialogText">Hand the device to the next player. Their bid will stay private.</p>
+    <button class="start-btn compact-btn" id="passReadyBtn"><span>I'M READY</span><b>→</b></button>
+  </dialog>
+
+  <dialog id="howDialog"><button class="close" id="closeHow">×</button><h2>How Draft Duel works</h2><ol><li>Choose Pass & Play for one-device games, or create an Online Room for separate devices.</li><li>Use 2–8 players.</li><li>Every player secretly bids from the same starting budget.</li><li>The highest valid bid wins the item and pays that amount.</li><li>Tied bids are settled randomly between the tied players.</li></ol></dialog>
 
   <script src="https://unpkg.com/peerjs@1.5.5/dist/peerjs.min.js"></script>
   <script src="app.js"></script>
