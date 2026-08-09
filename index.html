@@ -1,165 +1,33 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Draft Duel — multiplayer bidding drafts with friends." />
-  <title>Draft Duel</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Draft Duel</title><link rel="stylesheet" href="styles.css">
+  <script type="module" src="app.js"></script>
 </head>
 <body>
-  <div class="noise"></div>
-  <header class="topbar">
-    <a class="brand" href="#">DRAFT<span>DUEL</span></a>
-    <div class="top-actions">
-      <button class="ghost" id="howBtn">How to play</button>
-      <button class="pill" id="soundBtn" aria-pressed="true">🔊 Sound on</button>
-    </div>
-  </header>
+<main>
+  <header><div class="logo">DD</div><div><h1>Draft Duel</h1><p>Build your lineup. Outsmart your friends.</p></div></header>
+  <section id="home" class="card screen"><h2>How are you playing?</h2><div class="mode-grid">
+    <button class="mode" data-nav="localSetup"><b>Pass &amp; Play</b><span>2–8 players · one device</span></button>
+    <button class="mode" data-nav="hostSetup"><b>Host Online</b><span>Create a room for friends</span></button>
+    <button class="mode" data-nav="join"><b>Join Online</b><span>Enter a six-character code</span></button>
+  </div><details><summary>How does bidding work?</summary><p><b>Blind Bid:</b> everyone secretly locks a bid, then all bids are revealed. Tied highest bids are resolved by a rotating fair tie-break order.</p><p><b>Open Auction:</b> bids are visible. On your turn, bid any higher whole-dollar amount or pass. The last active bidder wins.</p></details></section>
 
-  <main>
-    <section id="homeView" class="view active">
-      <div class="hero">
-        <p class="eyebrow">THE MULTIPLAYER DRAFT GAME</p>
-        <h1>Build the best lineup.<br><em>Don’t go broke.</em></h1>
-        <p class="subhead">Create a room, invite friends on their own devices, and secretly bid from a shared budget.</p>
-      </div>
-      <div class="entry-grid three">
-        <article class="panel entry-card pass-card">
-          <div class="panel-title"><span>01</span><h2>Pass & Play</h2></div>
-          <p class="entry-copy">Everyone uses one phone or computer. Add players, then pass the device for each secret bid.</p>
-          <button class="start-btn compact-btn pass-start" id="passPlayBtn"><span>PLAY ON ONE DEVICE</span><b>→</b></button>
-        </article>
-        <article class="panel entry-card">
-          <div class="panel-title"><span>02</span><h2>Host online</h2></div>
-          <label>Your name<input id="hostName" value="Host" maxlength="18"></label>
-          <button class="start-btn compact-btn" id="createRoomBtn"><span>CREATE ROOM</span><b>→</b></button>
-        </article>
-        <article class="panel entry-card">
-          <div class="panel-title"><span>03</span><h2>Join online</h2></div>
-          <label>Your name<input id="joinName" placeholder="Your name" maxlength="18"></label>
-          <label>Room code<input id="joinCode" placeholder="ABC123" maxlength="6" autocapitalize="characters"></label>
-          <button class="start-btn compact-btn secondary-start" id="joinRoomBtn"><span>JOIN ROOM</span><b>→</b></button>
-          <div id="joinStatus" class="status">Ask the host for the six-character code.</div>
-        </article>
-      </div>
-    </section>
+  <section id="localSetup" class="card screen hidden"><button class="back" data-nav="home">← Back</button><h2>Pass &amp; Play setup</h2><div id="localForm"></div><button id="startLocal" class="primary">Start game</button></section>
+  <section id="hostSetup" class="card screen hidden"><button class="back" data-nav="home">← Back</button><h2>Host an online game</h2><div id="hostForm"></div><label>Your name<input id="hostName" value="Host" maxlength="20"></label><button id="createRoom" class="primary">Create room</button></section>
+  <section id="join" class="card screen hidden"><button class="back" data-nav="home">← Back</button><h2>Join a room</h2><label>Room code<input id="joinCode" maxlength="6" placeholder="ABC123"></label><label>Your name<input id="joinName" maxlength="20" placeholder="Your name"></label><button id="joinRoom" class="primary">Join room</button><p id="joinError" class="error"></p></section>
 
-    <section id="lobbyView" class="view">
-      <div class="lobby-head">
-        <div><p class="eyebrow">MULTIPLAYER LOBBY</p><h1>Room <button id="copyRoomCode" class="room-code">------</button></h1><p id="lobbyRoleText" class="subhead left">Share the code with your friends.</p></div>
-        <button class="ghost" id="leaveRoomBtn">Leave room</button>
-      </div>
+  <section id="lobby" class="card screen hidden"><h2>Room <span id="roomCode"></span></h2><p id="connectionStatus" class="muted"></p><div id="lobbySettings"></div><h3>Players</h3><div id="lobbyPlayers" class="players"></div><button id="startOnline" class="primary hidden">Start game</button><p id="lobbyHint" class="muted"></p></section>
 
-      <div class="lobby-grid">
-        <article class="panel setup-panel">
-          <div class="panel-title"><span>01</span><h2>Players <small id="playerCount">1/8</small></h2></div>
-          <div id="lobbyPlayers" class="lobby-players"></div>
-          <p class="hint" id="lobbyHint">Players can join from phones, tablets, or computers. The host must keep this tab open.</p>
-          <div class="local-only add-player-box">
-            <label>Add player
-              <div class="input-action"><input id="localPlayerName" placeholder="Player name" maxlength="18"><button id="addLocalPlayerBtn">Add</button></div>
-            </label>
-            <p class="hint">Add 2–8 players. Everyone will bid privately one at a time on this device.</p>
-          </div>
-        </article>
-
-        <article class="panel setup-panel host-only" id="gameSettingsPanel">
-          <div class="panel-title"><span>02</span><h2>Game settings</h2></div>
-          <div class="field-row compact">
-            <label>Budget<input id="budget" type="number" min="5" max="100" value="20"></label>
-            <label>Rounds<input id="rounds" type="number" min="3" max="20" value="5"></label>
-          </div>
-          <div class="segmented" id="modeTabs">
-            <button data-mode="artist" class="selected">Artist</button>
-            <button data-mode="playlist">Playlist</button>
-            <button data-mode="games">Video games</button>
-            <button data-mode="custom">Custom</button>
-          </div>
-
-          <div class="mode-pane active" data-pane="artist">
-            <label>Choose an artist
-              <div class="input-action"><input id="artistInput" placeholder="e.g. Bruno Mars" value="Bruno Mars"><button id="artistSearchBtn">Load songs</button></div>
-            </label>
-            <p class="hint">Uses Apple’s public iTunes Search API. No API key needed.</p>
-          </div>
-
-          <div class="mode-pane" data-pane="playlist">
-            <label>Spotify Client ID<input id="spotifyClientId" autocomplete="off" placeholder="Paste your Spotify app Client ID"></label>
-            <p class="hint">Spotify redirect URI: <code id="spotifyRedirectUri"></code></p>
-            <div class="spotify-actions"><button class="secondary" id="spotifyConnectBtn">Connect Spotify</button><button class="ghost" id="spotifyDisconnectBtn" hidden>Disconnect</button></div>
-            <div id="spotifyStatus" class="status">Spotify is not connected.</div>
-            <label>Spotify playlist URL<input id="playlistUrl" placeholder="https://open.spotify.com/playlist/..."></label>
-            <button class="secondary full" id="playlistLoadBtn">Import Spotify playlist</button>
-            <div class="divider"><span>or paste a list</span></div>
-            <textarea id="playlistText" rows="5" placeholder="Song — Artist&#10;Song — Artist"></textarea>
-            <button class="secondary full" id="textPlaylistBtn">Use pasted list</button>
-          </div>
-
-          <div class="mode-pane" data-pane="games">
-            <label>Theme<input id="gameTheme" value="All-time video games" placeholder="e.g. PlayStation exclusives"></label>
-          </div>
-
-          <div class="mode-pane" data-pane="custom">
-            <label>Category name<input id="customCategory" placeholder="e.g. NBA players, movies, fast food"></label>
-            <label>One item per line<textarea id="customItems" rows="8" placeholder="Item 1&#10;Item 2&#10;Item 3"></textarea></label>
-          </div>
-          <div id="poolStatus" class="status">Ready to load Bruno Mars songs.</div>
-          <button class="start-btn" id="startBtn"><span>START FOR EVERYONE</span><b>→</b></button>
-        </article>
-
-        <article class="panel waiting-panel guest-only" id="guestWaitingPanel">
-          <h2>Waiting for the host</h2><p>The game will begin automatically when the host starts it.</p><div class="waiting-pulse"></div>
-        </article>
-      </div>
-    </section>
-
-    <section id="gameView" class="view">
-      <div class="game-header">
-        <div><p class="eyebrow" id="categoryLabel">DRAFT</p><h2>Round <span id="roundNumber">1</span> of <span id="roundTotal">5</span></h2></div>
-        <div class="room-mini" id="gameRoomBadge">Room <strong id="gameRoomCode">------</strong></div>
-      </div>
-      <div class="scoreboard multiplayer" id="scoreboard"></div>
-
-      <article class="reveal-card" id="revealCard">
-        <div class="cover-wrap"><img id="itemArt" alt="Draft item artwork"><div class="vinyl"></div></div>
-        <div class="item-copy"><p id="itemMeta">PICK 1</p><h1 id="itemTitle">Locked Out of Heaven</h1><h3 id="itemSubtitle">Bruno Mars</h3><audio id="previewAudio" preload="none"></audio><button class="preview-btn" id="previewBtn">▶ Play preview</button></div>
-      </article>
-
-      <div class="auction-panel">
-        <p id="bidPrompt">Enter your secret bid</p>
-        <div class="bid-controls" id="bidControls"><button class="minus">−</button><div class="bid-value">$<input id="bidInput" type="number" min="0" value="1"></div><button class="plus">+</button></div>
-        <button class="lock-btn" id="lockBidBtn">LOCK IN BID</button>
-        <p class="pass-device" id="bidStatus">Your bid stays hidden until everybody has locked in.</p>
-      </div>
-
-      <div class="round-result" id="roundResult" hidden>
-        <h2 id="roundWinnerText"></h2><p id="roundBidText"></p>
-        <button class="secondary host-only" id="nextRoundBtn">NEXT ROUND</button>
-        <p class="guest-only">Waiting for the host to continue…</p>
-      </div>
-    </section>
-
-    <section id="resultView" class="view">
-      <div class="result-hero"><p class="eyebrow">DRAFT COMPLETE</p><h1 id="winnerText">Draft complete!</h1><p id="winnerSub">The lineups are locked.</p></div>
-      <div class="final-board" id="finalBoard"></div>
-      <button class="start-btn host-only" id="playAgainBtn"><span>BACK TO LOBBY</span><b>↻</b></button>
-      <p class="guest-only result-wait">Waiting for the host to start another game.</p>
-    </section>
-  </main>
-
-  <dialog id="passDialog" class="pass-dialog">
-    <h2 id="passDialogTitle">Pass the device</h2>
-    <p id="passDialogText">Hand the device to the next player. Their bid will stay private.</p>
-    <button class="start-btn compact-btn" id="passReadyBtn"><span>I'M READY</span><b>→</b></button>
-  </dialog>
-
-  <dialog id="howDialog"><button class="close" id="closeHow">×</button><h2>How Draft Duel works</h2><ol><li>Choose Pass & Play for one-device games, or create an Online Room for separate devices.</li><li>Use 2–8 players.</li><li>Every player secretly bids from the same starting budget.</li><li>The highest valid bid wins the item and pays that amount.</li><li>Tied bids are settled randomly between the tied players.</li></ol></dialog>
-
-  <script src="https://unpkg.com/peerjs@1.5.5/dist/peerjs.min.js"></script>
-  <script src="app.js"></script>
-</body>
-</html>
+  <section id="game" class="screen hidden"><div class="topbar"><div><small id="roundLabel"></small><h2 id="itemName"></h2><p id="itemSubtitle"></p></div><img id="itemArt" alt="" class="art hidden"></div><div id="scoreboard" class="scoreboard"></div><section id="actionCard" class="card"></section><section id="resultsCard" class="card hidden"></section></section>
+  <section id="final" class="card screen hidden"><h2>Draft complete</h2><div id="finalResults"></div><button class="primary" onclick="location.reload()">New game</button></section>
+</main>
+<template id="setupTemplate"><div class="setup">
+  <label>Bidding mode<select class="bidMode"><option value="blind">Blind Bid — secret bids</option><option value="open">Open Auction — visible bids</option></select></label>
+  <div class="two"><label>Starting budget ($)<input class="budget" type="number" min="1" max="999" value="20"></label><label>Rounds<input class="rounds" type="number" min="1" max="20" value="5"></label></div>
+  <label>Draft pool<select class="source"><option value="artist">Songs by artist</option><option value="playlist">Paste a song playlist</option><option value="games">Video games</option><option value="custom">Custom items</option></select></label>
+  <div class="sourceFields"><label class="artistField">Artist<input class="artist" value="Bruno Mars" placeholder="Artist name"></label><label class="listField hidden">One item per line<textarea class="items" rows="6" placeholder="Song — Artist&#10;Another item"></textarea></label></div>
+  <div class="playerFields"></div>
+</div></template>
+</body></html>
