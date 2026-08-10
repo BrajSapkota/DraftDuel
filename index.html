@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Draft Duel</title><link rel="stylesheet" href="styles.css">
-  <script type="module" src="app.js"></script>
+  <title>Draft Duel</title><link rel="stylesheet" href="styles.css?v=4"><link rel="stylesheet" href="enhancements.css?v=4">
+  <script type="module" src="app.js?v=4"></script>
 </head>
 <body>
 <nav class="site-nav"><button class="wordmark" data-nav="home" aria-label="Draft Duel home">DRAFT<span>DUEL</span></button><div><button class="nav-link" data-nav="home">Home</button><button class="nav-link" data-nav="join">Join room</button><button class="how-link" id="howButton">How to play</button></div></nav>
@@ -20,7 +20,7 @@
 
   <section id="lobby" class="card screen hidden"><p class="eyebrow">ONLINE LOBBY</p><h2>Room <span id="roomCode"></span></h2><p id="connectionStatus" class="muted"></p><div id="inviteTools" class="invite-tools"><label>Invite link<input id="inviteLink" readonly></label><button id="copyInvite">Copy invite link</button></div><p id="copyStatus" class="success" aria-live="polite"></p><div id="lobbySettings"></div><h3>Players</h3><div id="lobbyPlayers" class="players"></div><button id="startOnline" class="primary hidden">Start game</button><p id="lobbyHint" class="muted"></p></section>
 
-  <section id="game" class="screen hidden"><div class="topbar"><div><small id="roundLabel"></small><h2 id="itemName"></h2><p id="itemSubtitle"></p></div><img id="itemArt" alt="" class="art hidden"></div><div id="scoreboard" class="scoreboard"></div><section id="actionCard" class="card"></section><section id="resultsCard" class="card hidden"></section></section>
+  <section id="game" class="screen hidden"><div class="topbar"><div><small id="roundLabel"></small><h2 id="itemName"></h2><p id="itemSubtitle"></p><audio id="itemPreview" class="preview hidden" controls preload="none"></audio></div><img id="itemArt" alt="" class="art hidden"></div><div id="scoreboard" class="scoreboard"></div><section id="actionCard" class="card"></section><section id="resultsCard" class="card hidden"></section></section>
   <section id="final" class="card screen hidden"><h2>Draft complete</h2><div id="finalResults"></div><button class="primary" onclick="location.reload()">New game</button></section>
 </main>
 <dialog id="howDialog"><button id="closeHow" class="dialog-close" aria-label="Close">×</button><p class="eyebrow">HOW TO PLAY</p><h2>Draft your favourites</h2><div class="how-grid"><div><b>1. Pick a pool</b><p>Use songs by an artist, a pasted playlist, video games, or your own custom items.</p></div><div><b>2. Place bids</b><p>Bid secretly in Blind Bid or outbid each other turn-by-turn in Open Auction.</p></div><div><b>3. Build a lineup</b><p>Win items without running out of money. The best final lineup wins the debate.</p></div></div></dialog>
@@ -28,7 +28,7 @@
   <label>Bidding mode<select class="bidMode"><option value="blind">Blind Bid — secret bids</option><option value="open">Open Auction — visible bids</option></select></label>
   <div class="two"><label>Starting budget ($)<input class="budget" type="number" min="1" max="999" value="20"></label><label>Rounds<input class="rounds" type="number" min="1" max="20" value="5"></label></div>
   <label>Draft pool<select class="source"><option value="artist">Songs by artist</option><option value="playlist">Paste a song playlist</option><option value="games">Video games</option><option value="custom">Custom items</option></select></label>
-  <div class="sourceFields"><label class="artistField">Artist<input class="artist" value="Bruno Mars" placeholder="Artist name"></label><label class="listField hidden">One item per line<textarea class="items" rows="6" placeholder="Song — Artist&#10;Another item"></textarea></label></div>
+  <div class="sourceFields"><div class="artistField"><label>Artists</label><div class="artists"></div><button type="button" class="smallbtn addArtist">+ Add another artist</button><button type="button" class="poolButton">Preview song pool</button><p class="poolHint muted">Preview, listen, and choose which songs can appear.</p><div class="songPool hidden"></div></div><label class="listField hidden">One item per line<textarea class="items" rows="6" placeholder="Song — Artist&#10;Another item"></textarea></label></div>
   <div class="playerFields"></div>
 </div></template>
 </body></html>
