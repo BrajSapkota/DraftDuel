@@ -1,0 +1,13 @@
+{
+  "name": "Draft Duel",
+  "short_name": "Draft Duel",
+  "description": "Build the best lineup without going broke.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f8f4ec",
+  "theme_color": "#7657ff",
+  "icons": [
+    {"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+  ]
+}
