@@ -6,23 +6,24 @@
   <script type="module" src="app.js"></script>
 </head>
 <body>
+<nav class="site-nav"><button class="wordmark" data-nav="home" aria-label="Draft Duel home">DRAFT<span>DUEL</span></button><div><button class="nav-link" data-nav="home">Home</button><button class="nav-link" data-nav="join">Join room</button><button class="how-link" id="howButton">How to play</button></div></nav>
 <main>
-  <header><div class="logo">DD</div><div><h1>Draft Duel</h1><p>Build your lineup. Outsmart your friends.</p></div></header>
-  <section id="home" class="card screen"><h2>How are you playing?</h2><div class="mode-grid">
-    <button class="mode" data-nav="localSetup"><b>Pass &amp; Play</b><span>2–8 players · one device</span></button>
-    <button class="mode" data-nav="hostSetup"><b>Host Online</b><span>Create a room for friends</span></button>
-    <button class="mode" data-nav="join"><b>Join Online</b><span>Enter a six-character code</span></button>
-  </div><details><summary>How does bidding work?</summary><p><b>Blind Bid:</b> everyone secretly locks a bid, then all bids are revealed. Tied highest bids are resolved by a rotating fair tie-break order.</p><p><b>Open Auction:</b> bids are visible. On your turn, bid any higher whole-dollar amount or pass. The last active bidder wins.</p></details></section>
+  <section id="home" class="screen home-screen"><div class="hero"><p class="eyebrow">THE MULTIPLAYER DRAFT GAME</p><h1>Build the best lineup.<br><span>Don’t go broke.</span></h1><p class="hero-copy">Create a room, invite friends on their own devices, and bid from a shared budget.</p></div><div class="mode-grid">
+    <article class="mode-card pink"><div class="step">01</div><h2>Pass &amp; Play</h2><p>Everyone uses one phone or computer. Add players, then pass the device for each turn.</p><button class="mode-action" data-nav="localSetup">Play on one device <span>→</span></button></article>
+    <article class="mode-card purple"><div class="step">02</div><h2>Host online</h2><p>Create a Firebase room, choose the rules, then share a link with up to seven friends.</p><button class="mode-action" data-nav="hostSetup">Create a room <span>→</span></button></article>
+    <article class="mode-card lime"><div class="step">03</div><h2>Join online</h2><p>Open an invite link or enter the six-character room code sent by the host.</p><button class="mode-action" data-nav="join">Join a room <span>→</span></button></article>
+  </div></section>
 
   <section id="localSetup" class="card screen hidden"><button class="back" data-nav="home">← Back</button><h2>Pass &amp; Play setup</h2><div id="localForm"></div><button id="startLocal" class="primary">Start game</button></section>
   <section id="hostSetup" class="card screen hidden"><button class="back" data-nav="home">← Back</button><h2>Host an online game</h2><div id="hostForm"></div><label>Your name<input id="hostName" value="Host" maxlength="20"></label><button id="createRoom" class="primary">Create room</button></section>
   <section id="join" class="card screen hidden"><button class="back" data-nav="home">← Back</button><h2>Join a room</h2><label>Room code<input id="joinCode" maxlength="6" placeholder="ABC123"></label><label>Your name<input id="joinName" maxlength="20" placeholder="Your name"></label><button id="joinRoom" class="primary">Join room</button><p id="joinError" class="error"></p></section>
 
-  <section id="lobby" class="card screen hidden"><h2>Room <span id="roomCode"></span></h2><p id="connectionStatus" class="muted"></p><div id="lobbySettings"></div><h3>Players</h3><div id="lobbyPlayers" class="players"></div><button id="startOnline" class="primary hidden">Start game</button><p id="lobbyHint" class="muted"></p></section>
+  <section id="lobby" class="card screen hidden"><p class="eyebrow">ONLINE LOBBY</p><h2>Room <span id="roomCode"></span></h2><p id="connectionStatus" class="muted"></p><div id="inviteTools" class="invite-tools"><label>Invite link<input id="inviteLink" readonly></label><button id="copyInvite">Copy invite link</button></div><p id="copyStatus" class="success" aria-live="polite"></p><div id="lobbySettings"></div><h3>Players</h3><div id="lobbyPlayers" class="players"></div><button id="startOnline" class="primary hidden">Start game</button><p id="lobbyHint" class="muted"></p></section>
 
   <section id="game" class="screen hidden"><div class="topbar"><div><small id="roundLabel"></small><h2 id="itemName"></h2><p id="itemSubtitle"></p></div><img id="itemArt" alt="" class="art hidden"></div><div id="scoreboard" class="scoreboard"></div><section id="actionCard" class="card"></section><section id="resultsCard" class="card hidden"></section></section>
   <section id="final" class="card screen hidden"><h2>Draft complete</h2><div id="finalResults"></div><button class="primary" onclick="location.reload()">New game</button></section>
 </main>
+<dialog id="howDialog"><button id="closeHow" class="dialog-close" aria-label="Close">×</button><p class="eyebrow">HOW TO PLAY</p><h2>Draft your favourites</h2><div class="how-grid"><div><b>1. Pick a pool</b><p>Use songs by an artist, a pasted playlist, video games, or your own custom items.</p></div><div><b>2. Place bids</b><p>Bid secretly in Blind Bid or outbid each other turn-by-turn in Open Auction.</p></div><div><b>3. Build a lineup</b><p>Win items without running out of money. The best final lineup wins the debate.</p></div></div></dialog>
 <template id="setupTemplate"><div class="setup">
   <label>Bidding mode<select class="bidMode"><option value="blind">Blind Bid — secret bids</option><option value="open">Open Auction — visible bids</option></select></label>
   <div class="two"><label>Starting budget ($)<input class="budget" type="number" min="1" max="999" value="20"></label><label>Rounds<input class="rounds" type="number" min="1" max="20" value="5"></label></div>
