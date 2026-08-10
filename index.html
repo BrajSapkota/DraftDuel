@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Draft Duel</title><link rel="stylesheet" href="styles.css?v=4"><link rel="stylesheet" href="enhancements.css?v=4">
-  <script type="module" src="app.js?v=4"></script>
+  <title>Draft Duel</title><link rel="stylesheet" href="styles.css?v=5"><link rel="stylesheet" href="enhancements.css?v=5"><link rel="stylesheet" href="spectator.css?v=5">
+  <script type="module" src="app.js?v=5"></script>
 </head>
 <body>
-<nav class="site-nav"><button class="wordmark" data-nav="home" aria-label="Draft Duel home">DRAFT<span>DUEL</span></button><div><button class="nav-link" data-nav="home">Home</button><button class="nav-link" data-nav="join">Join room</button><button class="how-link" id="howButton">How to play</button></div></nav>
+<nav class="site-nav"><button class="wordmark" data-nav="home" aria-label="Draft Duel home">DRAFT<span>DUEL</span></button><div><button class="nav-link" data-nav="home">Home</button><button class="nav-link" data-nav="join">Join room</button><button class="nav-link live-link" data-nav="spectate">Live games <span id="activeCount">0</span></button><button class="how-link" id="howButton">How to play</button></div></nav>
 <main>
   <section id="home" class="screen home-screen"><div class="hero"><p class="eyebrow">THE MULTIPLAYER DRAFT GAME</p><h1>Build the best lineup.<br><span>Don’t go broke.</span></h1><p class="hero-copy">Create a room, invite friends on their own devices, and bid from a shared budget.</p></div><div class="mode-grid">
     <article class="mode-card pink"><div class="step">01</div><h2>Pass &amp; Play</h2><p>Everyone uses one phone or computer. Add players, then pass the device for each turn.</p><button class="mode-action" data-nav="localSetup">Play on one device <span>→</span></button></article>
@@ -17,6 +17,9 @@
   <section id="localSetup" class="card screen hidden"><button class="back" data-nav="home">← Back</button><h2>Pass &amp; Play setup</h2><div id="localForm"></div><button id="startLocal" class="primary">Start game</button></section>
   <section id="hostSetup" class="card screen hidden"><button class="back" data-nav="home">← Back</button><h2>Host an online game</h2><div id="hostForm"></div><label>Your name<input id="hostName" value="Host" maxlength="20"></label><button id="createRoom" class="primary">Create room</button></section>
   <section id="join" class="card screen hidden"><button class="back" data-nav="home">← Back</button><h2>Join a room</h2><label>Room code<input id="joinCode" maxlength="6" placeholder="ABC123"></label><label>Your name<input id="joinName" maxlength="20" placeholder="Your name"></label><button id="joinRoom" class="primary">Join room</button><p id="joinError" class="error"></p></section>
+
+  <section id="spectate" class="card screen hidden"><button class="back" data-nav="home">← Back</button><p class="eyebrow">LIVE NOW</p><h2>Watch a draft</h2><p class="muted">Spectators are read-only and never take a player slot.</p><div id="liveGames" class="live-games"><p class="muted">Loading active games…</p></div></section>
+  <section id="spectatorGame" class="screen hidden"><button class="back" data-nav="spectate">← All live games</button><div id="spectatorContent"></div></section>
 
   <section id="lobby" class="card screen hidden"><p class="eyebrow">ONLINE LOBBY</p><h2>Room <span id="roomCode"></span></h2><p id="connectionStatus" class="muted"></p><div id="inviteTools" class="invite-tools"><label>Invite link<input id="inviteLink" readonly></label><button id="copyInvite">Copy invite link</button></div><p id="copyStatus" class="success" aria-live="polite"></p><div id="lobbySettings"></div><h3>Players</h3><div id="lobbyPlayers" class="players"></div><button id="startOnline" class="primary hidden">Start game</button><p id="lobbyHint" class="muted"></p></section>
 

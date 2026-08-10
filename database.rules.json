@@ -1,5 +1,11 @@
 {
   "rules": {
+    "publicGames": {
+      ".read": "auth != null",
+      "$room": {
+        ".write": "auth != null && ((!data.exists() && newData.child('hostUid').val() === auth.uid) || data.child('hostUid').val() === auth.uid)"
+      }
+    },
     "rooms": {
       "$room": {
         ".read": "auth != null",
