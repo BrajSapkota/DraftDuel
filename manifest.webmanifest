@@ -1,7 +1,7 @@
 {
-  "name": "Draft Duel",
-  "short_name": "Draft Duel",
-  "description": "Build the best lineup without going broke.",
+  "name": "Draft Duel Arcade",
+  "short_name": "Duel Arcade",
+  "description": "Draft, guess, draw, tap, and bluff across 86 music and party minigames.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
